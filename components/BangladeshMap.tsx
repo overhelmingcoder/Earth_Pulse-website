@@ -219,7 +219,7 @@ export default function BangladeshMap({ selectedDataset, selectedYear, onLocatio
             </div>
           </div>
           <div class="w-full h-2 mt-2 rounded-full bg-gray-200">
-            <div class="h-2 rounded-full" style="width: ${datasetValue * 100}%; background: ${color}"></div>
+            <div class="h-2 rounded-full" style="width: ${(Number(datasetValue) * 100).toFixed(0)}%; background: ${color}"></div>
           </div>
           <div class="mt-2 text-xs">
             <span class="font-semibold" style="color: ${color}">${severity.toUpperCase()}</span>
