@@ -9,6 +9,14 @@ import { bangladeshDistricts, getSeverityLevel, getSeverityColor, getHeatmapData
 // Import Leaflet CSS
 import 'leaflet/dist/leaflet.css'
 
+// Import leaflet.heat plugin
+import 'leaflet.heat'
+
+// Extend Leaflet types to include heatLayer
+declare module 'leaflet' {
+  function heatLayer(latlngs: any[], options?: any): any
+}
+
 // Fix for default markers in Next.js
 delete (L.Icon.Default.prototype as any)._getIconUrl
 L.Icon.Default.mergeOptions({
