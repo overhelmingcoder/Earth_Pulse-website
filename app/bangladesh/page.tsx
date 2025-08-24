@@ -29,6 +29,15 @@ export default function BangladeshPage() {
     name: string
   } | null>(null)
   const [showImpactCard, setShowImpactCard] = useState(false)
+  const [comparisonMode, setComparisonMode] = useState(false)
+  const [comparisonDistricts, setComparisonDistricts] = useState<Array<{
+    id: number
+    name: string
+    lat: number
+    lng: number
+    division: string
+  }>>([])
+  const [searchQuery, setSearchQuery] = useState('')
 
   const handleLocationSelect = (lat: number, lng: number, name: string) => {
     setSelectedLocation({ lat, lng, name })
@@ -78,7 +87,12 @@ export default function BangladeshPage() {
           <div className="lg:col-span-1 space-y-6">
             <Sidebar 
               selectedDataset={selectedDataset}
+              selectedYear={selectedYear}
               onDatasetChange={setSelectedDataset}
+              onYearChange={setSelectedYear}
+              comparisonMode={comparisonMode}
+              comparisonDistricts={comparisonDistricts}
+              searchQuery={searchQuery}
             />
             
             <TimeSlider 
