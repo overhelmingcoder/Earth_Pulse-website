@@ -162,21 +162,22 @@ const getTrendIcon = (trend: string) => {
 }
 
 const getInsightMessage = (dataset: string, data: any) => {
-  const change = ((data.current - data.baseline) / data.baseline * 100).toFixed(1)
+  const changeValue = ((data.current - data.baseline) / data.baseline * 100)
+  const change = changeValue.toFixed(1)
   
   switch (dataset) {
     case 'airQuality':
-      return change > 0 
-        ? `Air quality has deteriorated by ${Math.abs(change)}% since 2000`
-        : `Air quality has improved by ${Math.abs(change)}% since 2000`
+      return changeValue > 0 
+        ? `Air quality has deteriorated by ${Math.abs(changeValue).toFixed(1)}% since 2000`
+        : `Air quality has improved by ${Math.abs(changeValue).toFixed(1)}% since 2000`
     case 'forestCover':
-      return `Forest cover has decreased by ${Math.abs(change)}% since 2000`
+      return `Forest cover has decreased by ${Math.abs(changeValue).toFixed(1)}% since 2000`
     case 'temperature':
-      return `Temperature has increased by ${Math.abs(change)}% since 2000`
+      return `Temperature has increased by ${Math.abs(changeValue).toFixed(1)}% since 2000`
     case 'waterLevel':
-      return `Groundwater levels have decreased by ${Math.abs(change)}% since 2000`
+      return `Groundwater levels have decreased by ${Math.abs(changeValue).toFixed(1)}% since 2000`
     case 'weather':
-      return `Weather patterns have changed by ${Math.abs(change)}% since 2000`
+      return `Weather patterns have changed by ${Math.abs(changeValue).toFixed(1)}% since 2000`
     default:
       return 'Environmental changes detected'
   }

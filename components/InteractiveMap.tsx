@@ -4,8 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaf
 import "leaflet/dist/leaflet.css";
 
 function LocationMarker() {
-  const [position, setPosition] = useState(null);
-  const [location, setLocation] = useState(null);
+  const [position, setPosition] = useState<any>(null);
+  const [location, setLocation] = useState<string | null>(null);
 
   useMapEvents({
     click(e) {

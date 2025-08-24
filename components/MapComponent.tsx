@@ -259,19 +259,19 @@ export default function MapComponent({
       })
 
       // Add hover effects
-      marker.on('mouseover', function() {
+      marker.on('mouseover', function(this: any) {
         this.setRadius(16)
         this.setStyle({ fillOpacity: 1 })
       })
 
-      marker.on('mouseout', function() {
+      marker.on('mouseout', function(this: any) {
         this.setRadius(12)
         this.setStyle({ fillOpacity: 0.8 })
       })
     })
   }
 
-  const createPopupContent = (district: any, datasetValue: number, severity: string, color: string) => {
+  const createPopupContent = (district: any, datasetValue: string | number, severity: string, color: string) => {
     const IconComponent = layer.icon
     return `
       <div class="p-4 min-w-[280px]">
@@ -301,7 +301,7 @@ export default function MapComponent({
         </div>
         
         <div class="w-full h-2 mt-3 rounded-full bg-gray-200">
-          <div class="h-2 rounded-full transition-all duration-300" style="width: ${datasetValue * 100}%; background: ${color}"></div>
+          <div class="h-2 rounded-full transition-all duration-300" style="width: ${(Number(datasetValue) * 100).toFixed(0)}%; background: ${color}"></div>
         </div>
         
         <div class="mt-2 text-xs">
@@ -331,12 +331,11 @@ export default function MapComponent({
   }
 
   const addInfoControl = (map: L.Map) => {
-    const info = L.control({ position: 'bottomleft' })
-    
-    info.onAdd = function() {
-      const div = L.DomUtil.create('div', 'info')
-      div.innerHTML = `
-        <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600">
+    const InfoControl = L.Control.extend({
+      onAdd: function() {
+        const div = L.DomUtil.create('div', 'info')
+        div.innerHTML = `
+          <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600">
           <div class="flex items-center space-x-2 mb-2">
             <div class="w-4 h-4 rounded-full" style="background: ${layer.color.replace('text-', '')}"></div>
             <h4 class="font-semibold text-sm text-gray-800 dark:text-gray-200">${layer.name}</h4>
@@ -355,7 +354,9 @@ export default function MapComponent({
       `
       return div
     }
+    })
     
+    const info = new InfoControl({ position: 'bottomleft' })
     info.addTo(map)
   }
 

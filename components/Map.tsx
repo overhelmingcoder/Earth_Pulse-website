@@ -201,7 +201,7 @@ export default function Map({ selectedDataset, selectedYear, onLocationSelect }:
 
     samplePoints.forEach((point, index) => {
       // Create custom icon based on severity
-      const severityColors = {
+      const severityColors: Record<string, string> = {
         safe: '#10b981',
         warning: '#f59e0b', 
         danger: '#ef4444'
@@ -212,10 +212,10 @@ export default function Map({ selectedDataset, selectedYear, onLocationSelect }:
         html: `<div style="
           width: 20px; 
           height: 20px; 
-          background: ${severityColors[point.severity]}; 
+          background: ${severityColors[point.severity] || '#10b981'}; 
           border: 2px solid white; 
           border-radius: 50%; 
-          box-shadow: 0 0 10px ${severityColors[point.severity]};
+          box-shadow: 0 0 10px ${severityColors[point.severity] || '#10b981'};
           animation: ${point.severity === 'danger' ? 'pulse 2s infinite' : 'none'};
         "></div>`,
         iconSize: [20, 20],
@@ -251,26 +251,28 @@ export default function Map({ selectedDataset, selectedYear, onLocationSelect }:
     })
 
     // Add custom info control
-    const info = L.control({ position: 'bottomleft' })
-    
-    info.onAdd = function() {
-      const div = L.DomUtil.create('div', 'info')
-      div.innerHTML = `
-        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-          <h4 class="font-semibold text-sm mb-2">${layer.name}</h4>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Year: ${selectedYear}</p>
-          <div class="flex items-center space-x-2 text-xs">
-            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>Safe</span>
-            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>Moderate</span>
-            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span>Dangerous</span>
+    const InfoControl = L.Control.extend({
+      onAdd: function() {
+        const div = L.DomUtil.create('div', 'info')
+        div.innerHTML = `
+          <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <h4 class="font-semibold text-sm mb-2">${layer.name}</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Year: ${selectedYear}</p>
+            <div class="flex items-center space-x-2 text-xs">
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span>Safe</span>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <span>Moderate</span>
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <span>Dangerous</span>
+            </div>
           </div>
-        </div>
-      `
-      return div
-    }
+        `
+        return div
+      }
+    })
+    
+    const info = new InfoControl({ position: 'bottomleft' })
     
     info.addTo(map)
 

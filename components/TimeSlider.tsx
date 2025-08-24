@@ -22,14 +22,13 @@ export default function TimeSlider({ selectedYear, onYearChange }: TimeSliderPro
 
     if (isPlaying) {
       interval = setInterval(() => {
-        onYearChange((prevYear) => {
-          const nextYear = prevYear + 1
-          if (nextYear > maxYear) {
-            setIsPlaying(false)
-            return minYear
-          }
-          return nextYear
-        })
+        const nextYear = selectedYear + 1
+        if (nextYear > maxYear) {
+          setIsPlaying(false)
+          onYearChange(minYear)
+        } else {
+          onYearChange(nextYear)
+        }
       }, playbackSpeed)
     }
 

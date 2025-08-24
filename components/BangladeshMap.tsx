@@ -258,26 +258,28 @@ export default function BangladeshMap({ selectedDataset, selectedYear, onLocatio
     }
 
     // Add custom info control
-    const info = L.control({ position: 'bottomleft' })
-    
-    info.onAdd = function() {
-      const div = L.DomUtil.create('div', 'info')
-      div.innerHTML = `
-        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-          <h4 class="font-semibold text-sm mb-2">${layer.name}</h4>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Year: ${selectedYear}</p>
-          <div class="flex items-center space-x-2 text-xs">
-            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>Good</span>
-            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>Warning</span>
-            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span>Alarming</span>
+    const InfoControl = L.Control.extend({
+      onAdd: function() {
+        const div = L.DomUtil.create('div', 'info')
+        div.innerHTML = `
+          <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <h4 class="font-semibold text-sm mb-2">${layer.name}</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Year: ${selectedYear}</p>
+            <div class="flex items-center space-x-2 text-xs">
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span>Good</span>
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <span>Warning</span>
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+              <span>Alarming</span>
+            </div>
           </div>
-        </div>
-      `
-      return div
-    }
+        `
+        return div
+      }
+    })
+    
+    const info = new InfoControl({ position: 'bottomleft' })
     
     info.addTo(map)
 
